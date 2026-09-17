@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TujuLokal - Smart Tourism Ecosystem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #059669; /* Emerald Green */
+            --primary-dark: #047857;
+            --secondary: #2563EB; /* Royal Blue for Tech feel */
+            --accent: #F59E0B; /* Amber for notifications/points */
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --gray: #6B7280;
+            --red: #EF4444;
+            --green: #10B981;
+            --yellow: #FBBF24;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .lang-currency {
+            font-size: 0.8rem;
+            color: var(--gray);
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        /* Hero & Booking System */
+        .hero {
+            padding: 120px 5% 80px;
+            background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin-bottom: 40px;
+        }
+
+        /* Dynamic Booking Widget */
+        .booking-widget {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            width: 100%;
+            max-width: 1000px;
+            border: 1px solid #eee;
+        }
+
+        .input-group {
+            flex: 1;
+            min-width: 180px;
+            text-align: left;
+        }
+
+        .input-group label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            font-weight: 700;
+            display: block;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group select, .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+            background: #f9fafb;
+            transition: 0.3s;
+        }
+
+        .input-group select:focus {
+            border-color: var(--primary);
+            background: white;
+        }
+
+        .btn-search {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 25px;
+            flex-basis: 150px;
+        }
+
+        .btn-search:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Section Global */
+        section {
+            padding: 80px 5%;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-header h2 {
+            font-size: 2.2rem;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .section-header p {
+            color: var(--gray);
+        }
+
+        /* Live Heatmap Simulation */
+        .heatmap-container {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 400px;
+            background-image: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .heatmap-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(2px);
+        }
+
+        .pulse-point {
+            position: absolute;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            cursor: pointer;
+        }
+
+        .point-red { background: rgba(239, 68, 68, 0.7); width: 100px; height: 100px; top: 30%; left: 40%; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+        .point-yellow { background: rgba(251, 191, 36, 0.7); width: 80px; height: 80px; top: 60%; left: 60%; box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); }
+        .point-green { background: rgba(16, 185, 129, 0.8); width: 60px; height: 60px; top: 40%; left: 75%; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+
+        @keyframes pulse {
+            70% { box-shadow: 0 0 0 20px rgba(0, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+        }
+
+        .heatmap-legend {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .legend-item { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; font-size: 0.85rem; font-weight: 600;}
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+
+        /* Features Grid */
+        .grid-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid #f3f4f6;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            background: #ecfdf5;
+            color: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 { font-size: 1.2rem; margin-bottom: 10px; color: var(--dark); }
+        .feature-card p { font-size: 0.9rem; color: var(--gray); line-height: 1.6; }
+
+        /* Table Ecosystem */
+        .ecosystem-section {
+            background-color: white;
+        }
+
+        .eco-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .eco-table th, .eco-table td {
+            padding: 18px 25px;
+            text-align: left;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .eco-table th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        .eco-table tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .eco-table td:first-child {
+            font-weight: 700;
+            color: var(--secondary);
+            width: 20%;
+        }
+
+        /* Floating Geofence Notification */
+        .geofence-alert {
+            position: fixed;
+            bottom: -100px;
+            right: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            z-index: 2000;
+            transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            max-width: 350px;
+            border-left: 5px solid var(--accent);
+        }
+
+        .geofence-alert.show {
+            bottom: 30px;
+        }
+
+        .geo-icon {
+            font-size: 2rem;
+            color: var(--accent);
+        }
+
+        /* Modal / Popups */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .modal-content h3 { color: var(--dark); margin-bottom: 15px;}
+        .modal-btn {
+            background: var(--primary);
+            color: white; border: none; padding: 10px 25px; border-radius: 8px; margin-top: 20px; cursor: pointer; font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <a href="#" class="logo"><i class="fas fa-map-location-dot"></i> TujuLokal</a>
+        <nav>
+            <ul>
+                <li><a href="#booking">Dynamic Ticketing</a></li>
+                <li><a href="#heatmap">Live Crowd Map</a></li>
+                <li><a href="#fitur">Fitur Turis</a></li>
+                <li><a href="#ekosistem">Ekosistem Platform</a></li>
+                <li class="lang-currency"><i class="fas fa-globe"></i> ID/IDR</li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero & Dynamic Time-Slot Ticketing -->
+    <section id="booking" class="hero">
+        <h1>Pariwisata Pintar, <span>Ekonomi Merata</span></h1>
+        <p>Platform terintegrasi pertama yang mengatur lalu lintas wisata. Dapatkan harga lebih murah di jam sepi, dan kumpulkan poin stamp dari UMKM lokal.</p>
+        
+        <div class="booking-widget">
+            <div class="input-group">
+                <label>Destinasi Utama</label>
+                <select id="destinasi">
+                    <option value="borobudur">Candi Borobudur</option>
+                    <option value="bromo">Gunung Bromo</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Tanggal</label>
+                <input type="date">
+            </div>
+            <div class="input-group">
+                <label>Jam Kunjung (Time-Slot)</label>
+                <select id="timeslot" onchange="checkPrice()">
+                    <option value="pagi">08:00 - 11:00 (Jam Sibuk / Padat)</option>
+                    <option value="siang">12:00 - 15:00 (Normal)</option>
+                    <option value="sore">15:00 - 18:00 (Sepi / Diskon)</option>
+                </select>
+            </div>
+            <button class="btn-search" onclick="bookTicket()">Cek Harga</button>
+        </div>
+    </section>
+
+    <!-- Live Crowd Heatmap -->
+    <section id="heatmap">
+        <div class="section-header">
+            <h2>Live Crowd Heatmap 📡</h2>
+            <p>Pantau kepadatan destinasi secara real-time. Hindari area merah, tuju area hijau untuk diskon kilat UMKM.</p>
+        </div>
+
+        <div class="heatmap-container">
+            <div class="heatmap-overlay"></div>
+            
+            <div class="pulse-point point-red" onclick="showModal('Area Zona 1 Sangat Padat. Sistem menyarankan pengalihan rute. Harga tiket +20%.')">
+                Padat
+            </div>
+            <div class="pulse-point point-yellow" onclick="showModal('Area Zona 2 Sedang. Kapasitas sisa 45%.')">
+                Sedang
+            </div>
+            <div class="pulse-point point-green" onclick="showModal('Area UMKM Candi Mendut Sepi. Tersedia Flash Sale & Voucher Bundling!')">
+                Sepi (Promo)
+            </div>
+
+            <div class="heatmap-legend">
+                <div class="legend-item"><div class="dot" style="background: var(--red);"></div> Merah: Padat (Hindari)</div>
+                <div class="legend-item"><div class="dot" style="background: var(--yellow);"></div> Kuning: Sedang</div>
+                <div class="legend-item"><div class="dot" style="background: var(--green);"></div> Hijau: Sepi (Harga Turun)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fitur Wisatawan (Grid) -->
+    <section id="fitur" style="background: white;">
+        <div class="section-header">
+            <h2>Fitur Wisatawan (Tourist Apps)</h2>
+            <p>Berbagai kemudahan dalam satu genggaman, bahkan saat tanpa sinyal internet.</p>
+        </div>
+
+        <div class="grid-features">
+            <div class="feature-card">
+                <div class="icon-box"><i class="fas fa-passport"></i></div>
+                <h3>Digital Tourist Passport</h3>
+                <p>Sistem paspor digital otomatis mengumpulkan stamp setiap kali Anda bertransaksi QRIS di UMKM terdaftar.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-box"><i class="fas fa-route"></i></div>
+                <h3>Smart Itinerary & Bundling</h3>
+                <p>AI membuatkan rute kombinasi: Tiket Utama + Tempat Alternatif Sepi + Voucher Makan UMKM dalam 1 paket hemat.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-box"><i class="fas fa-bolt"></i></div>
+                <h3>Fast-Track Redemption</h3>
+                <p>Tukar poin stamp dari UMKM lokal menjadi akses jalur khusus bebas antre di destinasi wisata utama.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-box"><i class="fas fa-qrcode"></i></div>
+                <h3>Offline Access QR</h3>
+                <p>Tiket masuk dan QR paspor stamp Anda tetap bisa di-scan tanpa sinyal internet. Ideal untuk wisata alam.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-box"><i class="fas fa-star-half-stroke"></i></div>
+                <h3>Verified Review System</h3>
+                <p>Hanya pengunjung yang terbukti check-in dan transaksi yang dapat memberikan ulasan, menjamin review 100% asli.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-box"><i class="fas fa-triangle-exclamation"></i></div>
+                <h3>Emergency & Crowdsource Alert</h3>
+                <p>Terima notifikasi cuaca buruk, penutupan rute, dan info keramaian langsung dari sesama pengunjung di lokasi.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Table Ekosistem Platform -->
+    <section id="ekosistem" class="ecosystem-section">
+        <div class="section-header">
+            <h2>Peran Ekosistem Platform</h2>
+            <p>Bukan sekadar B2C, TujuLokal menghubungkan seluruh pemangku kepentingan secara real-time.</p>
+        </div>
+
+        <table class="eco-table">
+            <thead>
+                <tr>
+                    <th>Pihak</th>
+                    <th>Aksi Utama di Platform</th>
+                    <th>Dampak Langsung</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Wisatawan</td>
+                    <td>Beli tiket jam kunjung & scan QR di UMKM.</td>
+                    <td>Bebas antre, hemat biaya, dapat poin/stamp.</td>
+                </tr>
+                <tr>
+                    <td>Pengelola Wisata</td>
+                    <td>Atur kuota jam kunjung (Capacity Manager) & pantau kapasitas.</td>
+                    <td>Destinasi terawat, tidak ada penumpukan turis.</td>
+                </tr>
+                <tr>
+                    <td>Mitra UMKM</td>
+                    <td>Terima voucher & kirim promo diskon kilat (Flash Sale) saat sepi.</td>
+                    <td>Penjualan naik drastis dari limpahan turis.</td>
+                </tr>
+                <tr>
+                    <td>Dinas Pariwisata (Gov)</td>
+                    <td>Pantau Dashboard Pergerakan (Crowd Movement & Economic Impact).</td>
+                    <td>Kebijakan pariwisata lebih terukur dan presisi berbasis data.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Floating Notifikasi Geofencing -->
+    <div class="geofence-alert" id="geofence">
+        <div class="geo-icon"><i class="fas fa-map-marker-alt"></i></div>
+        <div>
+            <h4 style="margin-bottom: 5px; color: var(--dark);">Geofencing Alert!</h4>
+            <p style="font-size: 0.85rem; color: var(--gray);">Kamu berada 100m dari <strong>Warung Bu Siti</strong>. Mampir sekarang, klaim diskon 20% & dapatkan 1 Poin Stamp!</p>
+        </div>
+    </div>
+
+    <!-- Modal Utama -->
+    <div class="modal" id="systemModal">
+        <div class="modal-content">
+            <h3><i class="fas fa-robot" style="color: var(--primary);"></i> Sistem TujuLokal</h3>
+            <p id="modalMsg" style="color: var(--gray); line-height: 1.5;"></p>
+            <button class="modal-btn" onclick="closeModal()">Mengerti</button>
+        </div>
+    </div>
+
+    <!-- Script Logika Presentasi -->
+    <script>
+        // Simulasi Dynamic Time-Slot Ticketing
+        function checkPrice() {
+            // Animasi visual pada form (opsional)
+        }
+
+        function bookTicket() {
+            const time = document.getElementById('timeslot').value;
+            let msg = "";
+
+            if(time === 'pagi') {
+                msg = "⚠️ Peringatan Kepadatan!\nJam 08:00 - 11:00 terdeteksi SANGAT PADAT. Harga tiket diterapkan normal (Rp 75.000). Apakah Anda ingin pindah ke jam 15:00 untuk mendapat potongan 30%?";
+            } else if (time === 'siang') {
+                msg = "✅ Kapasitas Sedang.\nHarga tiket Rp 50.000. Tersedia opsi Bundling dengan Voucher Makan UMKM seharga Rp 65.000 (Rekomendasi AI).";
+            } else {
+                msg = "🎉 Harga Spesial!\nJam 15:00 - 18:00 pengunjung sepi. Anda mendapat potongan harga menjadi Rp 35.000. Sisa kuota (Capacity Manager): 250 orang.";
+            }
+
+            showModal(msg);
+        }
+
+        // Modal Handler
+        function showModal(text) {
+            document.getElementById('modalMsg').innerText = text;
+            document.getElementById('systemModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('systemModal').style.display = 'none';
+        }
+
+        // Simulasi Geofencing & Push Notification muncul setelah 5 detik scroll
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 500) {
+                document.getElementById('geofence').classList.add('show');
+            }
+        });
+    </script>
+</body>
+</html>
